@@ -20,11 +20,15 @@ angular.module('resource', ['ngResource'])
         });
 
         $scope.remove = function (user, index) {
-            console.log(user);
-            Users
+            // throws origin exception while using origin
+            //Users.delete({}, function(user){
+            //    console.log('delete done');
+            //}, function(user){console.log('failed');});
+
             //Users['delete']({}, user);
+            //Users.delete({}, user);
             //Users['delete']({}, user);
-            //user.$delete();
+            user.$delete();
             $scope.users.splice(index, 1);
         };
 
