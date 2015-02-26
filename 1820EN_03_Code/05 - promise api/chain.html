@@ -1,0 +1,171 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../lib/jasmine-1.3.0/jasmine.css">
+    <script src="../../lib/jasmine-1.3.0/jasmine.js"></script>
+    <script src="../../lib/jasmine-1.3.0/jasmine-html.js"></script>
+    <script src="../../lib/angular/1.0.2/angular.js"></script>
+    <script src="../../lib/angular/1.0.2/angular-mocks.js"></script>
+    <!--<script src="promises.spec.js"></script>-->
+
+    <script>
+        var FoodCtrl = function($scope, $rootScope, $q, $log){
+
+            var Person = function (name, $log) {
+                this.eat = function (food) {
+                    $log.info(name + " is eating delicious " + food);
+                };
+                this.beHungry = function (reason) {
+                    $log.warn(name + " is hungry because: " + reason);
+                };
+            };
+
+            var Restaurant = function ($q, $rootScope) {
+                var currentOrder;
+
+                this.takeOrder = function (orderedItems) {
+                    currentOrder = {
+                        deferred: $q.defer(),
+                        items: orderedItems
+                    };
+                    return currentOrder.deferred.promise;
+                };
+
+                this.deliverOrder = function () {
+                    currentOrder.deferred.resolve(currentOrder.items);
+//                    $rootScope.$digest();
+                };
+
+                this.problemWithOrder = function (reason) {
+                    currentOrder.deferred.reject(reason);
+//                    $rootScope.$digest();
+                };
+            };
+
+            var slice = function (pizza) {
+                var res = "sliced " + pizza;
+                console.log(res);
+                return res;
+            };
+
+            var pizzaPit, saladBar, pawel, pete;
+            pawel = new Person('Pawel', $log);
+            pete = new Person('Peter', $log);
+
+            pizzaPit = new Restaurant($q, $rootScope);
+            saladBar = new Restaurant($q, $rootScope);
+
+            function callbackAggregation()
+            {
+                var pizzaDelivered = pizzaPit.takeOrder('Margherita');
+                pizzaDelivered.then(pawel.eat, pawel.beHungry);
+                pizzaDelivered.then(pete.eat, pete.beHungry);
+
+                var pizza2Delivered = pizzaPit.takeOrder('buffet');
+                pizza2Delivered.then(pete.eat, pete.beHungry);
+
+                pizzaPit.deliverOrder();
+            }
+
+            function sucPromiseChaining()
+            {
+                pizzaPit.takeOrder('Margherita').then(slice).then(pawel.eat);
+
+//                var pizzaDelivered = pizzaPit.takeOrder('Margherita');
+//                pizzaDelivered.then(slice);
+//                pizzaDelivered.then(pawel.eat);
+//                pizzaDelivered.then(pete.eat, pete.beHungry);
+
+
+                pizzaPit.deliverOrder();
+                //pizzaPit.problemWithOrder('sry');
+            }
+
+            function rejectPromiseChain()
+            {
+                pizzaPit.takeOrder('Capricciosa').then(slice).then(pawel.eat, pawel.beHungry);
+                pizzaPit.problemWithOrder('no Capricciosa, only Margherita left');
+            }
+
+            function recoveryFromPromiseReject()
+            {
+                var retry = function (reason) {
+                    console.log('retr');
+                    return pizzaPit.takeOrder('Margherita').then(slice);
+                };
+                pizzaPit.takeOrder('Capricciosa').then(slice, retry).then(pawel.eat, pawel.beHungry);
+
+                console.log('before');
+                pizzaPit.problemWithOrder('no Capricciosa, only Margherita left');
+                console.log('after');
+                pizzaPit.deliverOrder();
+                console.log('after1');
+            }
+
+            function throwEx()
+            {
+                var explain = function (reason) {
+                    return $q.reject('ordered pizza not available');
+                };
+
+                pizzaPit.takeOrder('Capricciosa').then(slice, explain).then(pawel.eat, pawel.beHungry);
+                pizzaPit.problemWithOrder('no Capricciosa, only Margherita left');
+            }
+
+            function all()
+            {
+                var ordersDelivered = $q.all([
+                    pizzaPit.takeOrder('Pepperoni'),
+                    saladBar.takeOrder('Fresh salad')
+                ]);
+
+                ordersDelivered.then(pawel.eat);
+
+                pizzaPit.deliverOrder();
+                saladBar.deliverOrder();
+            }
+
+            function allFail()
+            {
+                var ordersDelivered = $q.all([
+                    pizzaPit.takeOrder('Pepperoni'),
+                    saladBar.takeOrder('Fresh salad')
+                ]);
+
+                ordersDelivered.then(pawel.eat, pawel.beHungry);
+                //pizzaPit.deliverOrder();
+                pizzaPit.problemWithOrder('pizza trouble');
+                saladBar.problemWithOrder('no fresh lettuce');
+
+            }
+
+            function qWhen()
+            {
+                var ordersDelivered = $q.all([
+                    pizzaPit.takeOrder('Pepperoni'),
+                    $q.when('home made salad')
+                ]);
+
+                ordersDelivered.then(pawel.eat, pawel.beHungry);
+
+                pizzaPit.deliverOrder();
+            }
+
+            //chainReject();
+            //callbackAggregation();
+            //sucPromiseChaining();
+            //rejectPromiseChain();
+            //recoveryFromPromiseReject();
+            //throwEx();
+            //all();
+            //allFail();
+            qWhen();
+        };
+
+    </script>
+</head>
+<body ng-app="" ng-controller="FoodCtrl">
+
+</body>
+</html>
