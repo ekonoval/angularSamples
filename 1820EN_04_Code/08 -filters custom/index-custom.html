@@ -12,6 +12,7 @@
 
 <div class="well">
     <label>Search for: <input type="text" ng-model="criteriaTxt"></label>
+    <button ng-click="addRandomBacklogItem()">add random</button>
 </div>
 
 <!-- = = = = = = [ first table ] = = = = = = -->
@@ -38,7 +39,7 @@
 
     <tbody>
     <!-- = (backlog | filter:criteria | orderBy:sortField:reverse) | pagination:pageNo:pageSize -->
-    <tr ng-repeat="item in filteredBacklog = (backlog | filter:criteriaTxt)">
+    <tr ng-repeat="item in filteredBacklog = (backlog | filter:criteriaTxt | orderBy:sortField:isSortReveresed)">
         <td>{{item.name}}</td>
         <td>{{item.desc}}</td>
         <td>{{item.priority}}</td>

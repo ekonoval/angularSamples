@@ -31,6 +31,36 @@ angular.module('filtersCustom', [])
             }
         ];
 
+        $scope.criteriaTxt = '';
         $scope.sortField = null;
         $scope.isSortReveresed = false;
+
+        $scope.addRandomBacklogItem = function () {
+            $scope.backlog.push({name: 'Write 1st draft - '+Math.random(), desc: 'Write 1st draft of the text', priority: 3, estimation: 12, done: false});
+        };
+
+        //#------------------- sort -------------------#//
+        $scope.sort = function (fieldName) {
+            if ($scope.sortField === fieldName) {
+                $scope.isSortReveresed = !$scope.isSortReveresed;
+            } else {
+                $scope.sortField = fieldName;
+                $scope.isSortReveresed = false;
+            }
+        };
+
+        $scope.isSortUp = function (fieldName) {
+            return $scope.sortField == fieldName && !$scope.isSortReveresed;
+        };
+
+        $scope.isSortDown = function (fieldName) {
+            return $scope.sortField == fieldName && $scope.isSortReveresed;
+        };
+
+        //#------------------- custom filtering func -------------------#//
+        $scope.customFilteringFunc = function (item, p2) {
+            return (item.priority >= 9);
+        };
+
+
     });
