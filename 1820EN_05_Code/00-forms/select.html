@@ -1,0 +1,61 @@
+<!doctype html>
+<html ng-app="myApp">
+<head>
+    <meta charset="utf-8">
+    <title>AngularJS Plunker</title>
+    <script>document.write("<base href=\"" + document.location + "\" />");</script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.js"></script>
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="app.js"></script>
+
+    <style type="text/css">
+        select {
+            display: block;
+        }
+
+        label {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+
+    <script type="text/javascript">
+        var app = angular.module('myApp', []);
+
+        app.controller('MainCtrl', function ($scope) {
+            $scope.users = [
+                {firstName: 'Jo', lastName: 'Jordan', email: 'jo@jordan.com', sex: "Female"},
+                {firstName: 'Anne', lastName: 'Asher', email: 'anne@asher.com', sex: "Female"},
+                {firstName: 'Steve', lastName: 'Stone', email: 'steve@stone.com', sex: "Male"},
+                {firstName: 'Kev', lastName: 'King', email: 'kev@king.com', sex: "Male"},
+                {firstName: 'Tom', lastName: 'Cat', email: 'tom@jerry.com', sex: "Male-Cat"}
+            ];
+
+            $scope.getFullName = function (user) {
+                return user.firstName + ' ' + user.lastName;
+            };
+        });
+    </script>
+</head>
+
+<body ng-controller="MainCtrl">
+
+    <label>Select a user value with email for label</label>
+    <select ng-model="chosenUser" ng-options="user.email for user in users"></select>
+    Selected User: {{ chosenUser }}
+
+    <label>Select a user value with a computed label</label>
+    <select ng-model="chosenUser" ng-options="getFullName(user) for user in users"></select>
+    Selected User: {{ chosenUser }}
+
+    <label>Select a user's email with a computed label</label>
+    <select ng-model="chosenUserEmail" ng-options="user.email as getFullName(user) for user in users"></select>
+    Selected User's Email: {{ chosenUserEmail }}
+
+    <label>Select a user grouped by sex</label>
+    <select ng-model="chosenUser" ng-options="getFullName(user) group by user.sex for user in users"></select>
+    Selected User: {{ chosenUser }}
+
+</body>
+</html>
