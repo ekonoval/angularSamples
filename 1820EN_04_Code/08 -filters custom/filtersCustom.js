@@ -1,6 +1,6 @@
-angular.module('arrayFilters', [])
+angular.module('filtersCustom', [])
 
-    .controller('ArrayFiltersCtrl', function ($scope) {
+    .controller('FiltersCustomCtrl', function ($scope) {
 
         //model
         $scope.backlog = [
@@ -31,59 +31,36 @@ angular.module('arrayFilters', [])
             }
         ];
 
-        //filtering
-        $scope.filteredBacklog = $scope.backlog;
+        $scope.criteriaTxt = '';
+        $scope.sortField = null;
+        $scope.isSortReveresed = false;
 
-        //custom filtering function
-
-        $scope.doneAndBigEffort = function (backlogItem) {
-            return backlogItem.done && backlogItem.estimation > 20;
+        $scope.addRandomBacklogItem = function () {
+            $scope.backlog.push({name: 'Write 1st draft - '+Math.random(), desc: 'Write 1st draft of the text', priority: 3, estimation: 12, done: false});
         };
 
-        //sorting
-        $scope.sortField = undefined;
-        $scope.reverse = false;
-
+        //#------------------- sort -------------------#//
         $scope.sort = function (fieldName) {
             if ($scope.sortField === fieldName) {
-                $scope.reverse = !$scope.reverse;
+                $scope.isSortReveresed = !$scope.isSortReveresed;
             } else {
                 $scope.sortField = fieldName;
-                $scope.reverse = false;
+                $scope.isSortReveresed = false;
             }
         };
 
         $scope.isSortUp = function (fieldName) {
-            return $scope.sortField === fieldName && !$scope.reverse;
+            return $scope.sortField == fieldName && !$scope.isSortReveresed;
         };
+
         $scope.isSortDown = function (fieldName) {
-            return $scope.sortField === fieldName && $scope.reverse;
+            return $scope.sortField == fieldName && $scope.isSortReveresed;
         };
 
-        //pagination
-        $scope.pageSize = 3;
-        $scope.pages = [];
-        $scope.$watch('filteredBacklog.length', function (filteredSize) {
-            $scope.pages.length = 0;
-            var noOfPages = Math.ceil(filteredSize / $scope.pageSize);
-            for (var i = 0; i < noOfPages; i++) {
-                $scope.pages.push(i);
-            }
-        });
-
-        $scope.criteria = '';
-        $scope.pageNo = 0;
-
-        $scope.setActivePage = function (pageNo) {
-            if (pageNo >= 0 && pageNo < $scope.pages.length) {
-                $scope.pageNo = pageNo;
-            }
+        //#------------------- custom filtering func -------------------#//
+        $scope.customFilteringFunc = function (item, p2) {
+            return (item.priority >= 9);
         };
-    })
 
-    .filter('pagination', function () {
-        return function (inputArray, selectedPage, pageSize) {
-            var start = selectedPage * pageSize;
-            return inputArray.slice(start, start + pageSize);
-        };
+
     });
