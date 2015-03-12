@@ -1,29 +1,45 @@
 <!doctype html>
-<html ng-app>
+<html ng-app="myApp">
 <head>
-  <meta charset="utf-8">
-  <title>Chapter 8 - shared subforms</title>
-  <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <script>document.write("<base href=\"" + document.location + "\" />");</script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.4/angular.js"></script>
-  <script src="app.js"></script>
+    <meta charset="utf-8">
+    <title>Chapter 8 - shared subforms</title>
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script>document.write("<base href=\"" + document.location + "\" />");</script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.4/angular.js"></script>
+    <script type="text/javascript">
+        var app = angular.module('myApp', []);
+
+        app.controller('MainCtrl', function ($scope) {
+            // This method is here so that we can display the full JSON of the passed in object
+            // The built in json filter removes anythign starting with a $ so you don't get to see the
+            // $dirty, $pristine, etc flags
+            $scope.toJSON = function (obj) {
+                return JSON.stringify(obj, null, 2);
+            };
+
+        });
+    </script>
 </head>
 
-<body>
+<body ng-controller="MainCtrl">
+
 <script type="text/ng-template" id="password-form">
-  <ng-form name="passwordForm">
-    <div ng-show="user.password != user.password2">Passwords do not match</div>
-    <label>Password</label><input ng-model="user.password" type="password" required>
-    <label>Confirm Password</label><input ng-model="user.password2" type="password" required>
-  </ng-form>
+    <ng-form name="passwordForm2">
+        <div ng-show="user.password != user.password2">Passwords do not match</div>
+        <label>Password</label><input ng-model="user.password" type="password" required>
+        <label>Confirm Password</label><input ng-model="user.password2" type="password" required>
+    </ng-form>
 </script>
 
 <form name="form1" novalidate>
-  <legend>User Form</legend>
-  <label>Name</label><input ng-model="user.name" required>
-  <ng-include src="'password-form'"></ng-include>
+    <legend>User Form</legend>
+    <label>Name</label><input ng-model="user.name" required>
+    <ng-include src="'password-form'"></ng-include>
 </form>
+
+<pre ng-bind="toJSON(form1)"></pre>
+<pre ng-bind="toJSON(passwordForm)"></pre>
 
 </body>
 </html>

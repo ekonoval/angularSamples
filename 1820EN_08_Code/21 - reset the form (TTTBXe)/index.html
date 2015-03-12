@@ -1,17 +1,18 @@
 <!doctype html>
-<html ng-app="myApp" >
+<html ng-app="myApp">
 <head>
-  <meta charset="utf-8">
-  <title>Chapter 8 - reset the form</title>
-  <script>document.write("<base href=\"" + document.location + "\" />");</script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.3/angular.js"></script>
-  <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <script src="app.js"></script>
+    <meta charset="utf-8">
+    <title>Chapter 8 - reset the form</title>
+    <script>document.write("<base href=\"" + document.location + "\" />");</script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.3/angular.js"></script>
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="app.js"></script>
 </head>
 <body ng-controller="MainCtrl">
-  <h1>User Info</h1>
-  <form name="userInfoForm">
+<h1>User Info</h1>
+
+<form name="userInfoForm">
     <label>E-mail</label>
     <input class="span6" type="email" name="email" ng-model="user.email" required unique-email>
     <span ng-show="showError('email', 'required')" class="help-inline">This field is required.</span>
@@ -36,10 +37,12 @@
     <hr>
     <button ng-click="save()" ng-disabled="!canSave()">Save</button>
     <button ng-click="revert()" ng-disabled="!canRevert()">Revert Changes</button>
-  </form>
+</form>
 
-  User Model: <pre ng-bind="toJSON(user)"></pre>
-  Form: <pre ng-bind="toJSON(userInfoForm)"></pre>
-  
+User Model:
+<pre ng-bind="toJSON(user)"></pre>
+Form:
+<pre ng-bind="toJSON(userInfoForm)"></pre>
+
 </body>
 </html>
