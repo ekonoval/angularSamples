@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.js"></script>
-    <script src="/location.js"></script>
+    <script src="location.js"></script>
 </head>
 <body ng-app="location">
 <div ng-controller="MainCtrl">
@@ -12,7 +12,11 @@
         <li><a href="/admin/users/new">/admin/users/new</a></li>
         <li><a href="/admin/users/id">/admin/users/id</a></li>
     </ul>
-    Path: {{location.path()}}
+
+    <ul>
+        <li>Path: {{location.path()}}</li>
+        <li>{{location.search()}}</li>
+    </ul>
 </div>
 </body>
 </html>

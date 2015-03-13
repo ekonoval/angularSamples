@@ -15,8 +15,13 @@
         </ul>
     </div>
 </div>
+
+<div ng-bind="selectedRoute.templateUrl"></div>
+
 <div class="container-fluid" ng-include="selectedRoute.templateUrl">
     <!-- Route-dependent content goes here -->
 </div>
+
+
 </body>
 </html>
