@@ -1,3 +1,6 @@
+/**
+ * Routing basics play
+ */
 angular.module('routing_basics', [])
 
     .config(function ($routeProvider) {
@@ -5,6 +8,7 @@ angular.module('routing_basics', [])
         $routeProvider
             .when('/admin/users/list', {templateUrl: 'tpls/users/list.html'})
             .when('/admin/users/new', {templateUrl: 'tpls/users/new.html'})
+            .when('/admin/users/edit/:id', {templateUrl: 'tpls/users/edit.html'})
             .when('/admin/users/edit', {templateUrl: 'tpls/users/edit.html'})
 
             .otherwise({redirectTo: '/admin/users/list'});
@@ -25,6 +29,7 @@ angular.module('routing_basics', [])
                 return users.push(user);
             },
             get: function (id) {
+                console.log(id, users);
                 return users[id];
             },
             update: function (id, user) {
@@ -44,5 +49,7 @@ angular.module('routing_basics', [])
     })
 
     .controller('EditUserCtrl', function ($scope, $routeParams, Users) {
-        $scope.user = Users.get({id: $routeParams.id});
+        console.log($routeParams);
+        //$scope.user = Users.get({id: $routeParams.id});
+        $scope.user = Users.get($routeParams.id);
     });
