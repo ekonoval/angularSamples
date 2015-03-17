@@ -36,10 +36,6 @@ angular.module('custom-pag', [])
                     }
                 });
 
-                scope.cbHandler = function (page) {
-                    alert("xxxxx");
-                };
-
                 scope.selectPage = function (page) {
                     scope.currentPage = page;
 
@@ -55,6 +51,11 @@ angular.module('custom-pag', [])
                         scope.currentPage--;
                         scope.selectPage(scope.currentPage);
                     }
+                };
+
+                scope.noNext = function () {
+                    //console.log('noNext', scope.currentPage , scope.numPagesInner);
+                    return scope.currentPage === scope.numPagesInner;
                 };
 
                 scope.selectNext = function () {
