@@ -9,12 +9,13 @@
     <script type="text/javascript">
         function cbHandler(page)
         {
+            alert("cbHandler");
             console.log(page);
         }
     </script>
 </head>
 
-<body ng-init="top.currentPage=3; top.numPages=5; top.selectCount=0; top.inP='fakeInit'">
+<body ng-controller="customPagCtrl" ng-init="top.currentPage=3; top.numPages=5; top.selectCount=0; top.inP='fakeInit'">
 
 <custom_pagination
     in-p="top.inP"
