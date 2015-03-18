@@ -5,9 +5,14 @@ angular.module('date-picker-directive', [])
             require: 'ngModel',
             link: function (scope, element, attrs, ngModelCtrl) {
 
+                /**
+                 * The onSelect() handler calls our updateModel() function, which passes the new
+                 * date value into the $parsers pipeline via $setViewValue()
+                 */
                 var updateModel = function () {
                     scope.$apply(function () {
                         var date = element.datepicker("getDate");
+                        console.log(date);
                         element.datepicker("setDate", element.val());
                         ngModelCtrl.$setViewValue(date);
                     });
@@ -30,12 +35,14 @@ angular.module('date-picker-directive', [])
                     var options = scope.$eval(attrs.datePicker) || {};
                     // Bind to the date picker select event
                     options.onSelect = onSelectHandler(options.onSelect);
+
                     // In case the user changes the text directly in the input box
                     element.bind('change', updateModel);
                     // Remove any previous date picker, to ensure any config changes are picked up
                     element.datepicker('destroy');
                     // Create the new datepicker widget
                     element.datepicker(options);
+
                     // Render will update the date picker with the date
                     ngModelCtrl.$render();
                 };
@@ -53,6 +60,9 @@ angular.module('date-picker-directive', [])
 
                 // Watch for changes to the directives options
                 scope.$watch(attrs.datePicker, setUpDatePicker, true);
+
+                //ngModelCtrl.$setViewValue(new Date());
+
             }
         };
     });
