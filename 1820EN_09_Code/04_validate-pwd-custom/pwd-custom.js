@@ -11,15 +11,15 @@ angular.module('directives.pwd-custom', [])
             link: function (scope, element, attrs, ngModelCtrl) {
                 //console.log(ngModelCtrl);
 
-                function validateEqual(myValue) {
-                    //console.log(myValue, scope.$eval(attrs.validateEquals));
-                    var valid = (myValue === scope.$eval(attrs.validateEquals));
+                function checkValidateEquals(value) {
+                    var valid = (value === scope.$eval(attrs.validateEquals));
                     ngModelCtrl.$setValidity('equal', valid);
-                    return valid ? myValue : undefined;
+
+                    return valid ? value : undefined;
                 }
 
-                ngModelCtrl.$parsers.push(validateEqual);
-                ngModelCtrl.$formatters.push(validateEqual);
+                ngModelCtrl.$parsers.push(checkValidateEquals);
+                ngModelCtrl.$formatters.push(checkValidateEquals);
 
                 scope.$watch(attrs.validateEquals, function () {
                     ngModelCtrl.$setViewValue(ngModelCtrl.$viewValue);
