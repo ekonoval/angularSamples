@@ -3,6 +3,7 @@
 angular.module('mock.Users', []).factory('Users', function () {
     var Users = {};
     Users.query = function (query, response) {
+        console.log('Users.query');
         // We capture the response so that the tests can call it with their own data
         Users.respondWith = function (emails) {
             response(emails);

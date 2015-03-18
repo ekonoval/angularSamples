@@ -13,6 +13,7 @@ angular.module('unique-email-directive', [])
 
                 // If the model changes, store this since we assume it is the current value of the user's email
                 // and we don't want to check the server if the user re-enters their original email
+                // is called just once
                 ngModelCtrl.$formatters.unshift(function (modelValue) {
                     original = modelValue;
                     return modelValue;
