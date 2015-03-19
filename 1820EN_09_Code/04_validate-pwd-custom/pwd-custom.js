@@ -2,7 +2,7 @@ angular.module('directives.pwd-custom', [])
     .controller('PwdCustomCtrl', function ($scope) {
         $scope.bothPwdMatch = function () {
             return $scope.passwordForm.$dirty && $scope.passwordForm.$valid;
-        }
+        };
     })
     .directive('validateEquals', function () {
         return {

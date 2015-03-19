@@ -2,7 +2,7 @@ angular.module('custom-pag', [])
     .controller('customPagCtrl', function ($scope) {
         $scope.cbHandler = function (page) {
             console.log('cbHandler in customPagCtrl: ', page);
-        }
+        };
     })
     .directive('customPagination', function () {
 
