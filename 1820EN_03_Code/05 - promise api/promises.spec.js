@@ -120,8 +120,8 @@ describe('pizza pit', function () {
                 };
                 pizzaPit.takeOrder('Capricciosa').then(slice, retry).then(pawel.eat, pawel.beHungry);
 
-                //pizzaPit.problemWithOrder('no Capricciosa, only Margherita left');
-                //pizzaPit.deliverOrder();
+                pizzaPit.problemWithOrder('no Capricciosa, only Margherita left');
+                pizzaPit.deliverOrder();
 
                 expect($log.info.logs).toContain(['Pawel is eating delicious sliced Margherita']);
             });
