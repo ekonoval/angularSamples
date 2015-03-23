@@ -7,7 +7,8 @@ angular.module("alert-directive", [])
     template:
     '<div class="alert alert-{{type || \'info\'}}">' +
       '<button type="button" class="close" ng-click="close()">&times;</button>' +
-      '<div ng-transclude></div>' +
+      '<div>innerType: {{type}}</div>' +
+      '<div ng-transclude>innerT {{type}}<br/></div>' +
     '</div>',
     transclude:true,
     scope:{
